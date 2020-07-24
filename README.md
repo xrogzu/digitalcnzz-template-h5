@@ -23,5 +23,5 @@ gzip: true, exclude: /.\*\.\$/ }
 
 ## 生产环境配置
 
-{ ossBaseDir: '/digitalcnzz/', project: 'digitalcnzz-xxxx-h5', // 发布前把 xxxx 换成当前项目的名称 retry: 0, gzip: true,
-exclude: /.\*\.\$/ }
+{ ossBaseDir: '/digitalcnzz/prod', project: 'digitalcnzz-xxxx-h5', // 发布前把 xxxx 换成当前项目的名称 retry: 0, gzip:
+true, exclude: /.\*\.\$/ }
