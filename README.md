@@ -1,6 +1,6 @@
 # digitalzz-webFront-mobile
 
-前端项目移动端模板
+数字郑州前端项目移动端模板
 
 # 安装依赖环境
 

@@ -1,5 +1,6 @@
 import { Toast } from 'vant'
 import { containerType, loginApp, getonverified } from '@/utils/alipay'
+import { alipayJSReady } from '@/utils'
 
 const getUseInfo = callback => {
   if (containerType() == 'app') {
@@ -33,9 +34,9 @@ const getUseInfo = callback => {
   } else {
     const mockInfo = {
       accessToken: 'c826c42f-7a9d-4cc8-a125-7f8adb0367b8',
-      displayName: '刘备',
-      phone: '18300000000',
-      idCode: '412712199504143589'
+      displayName: '张三',
+      phone: '15452541254',
+      idCode: '411123125412021122'
     }
     callback(mockInfo)
   }
@@ -55,10 +56,10 @@ const actions = {
   // 设置name
   setUserInfo: ({ commit }) => {
     return new Promise(resolve => {
-      getUseInfo(res => {
+      alipayJSReady(getUseInfo(res => {
         commit('SET_USER_INFO', res)
         resolve(res)
-      })
+      }))
     })
   }
 }

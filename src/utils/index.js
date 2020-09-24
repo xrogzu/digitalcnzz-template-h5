@@ -96,3 +96,11 @@ export function param2Obj (url) {
     '"}'
   )
 }
+
+export function alipayJSReady (callback) {
+  if (window.AlipayJSBridge) {
+    callback && callback();
+  } else {
+    document.addEventListener('AlipayJSBridgeReady', callback, false);
+  }
+}

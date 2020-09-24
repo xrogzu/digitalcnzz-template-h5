@@ -47,18 +47,18 @@ module.exports = {
   chainWebpack: config => {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
-    if (IS_PROD && process.env.WEBPACK_ALIOSS_PLUGIN_ACCESS_KEY_ID) {
-      config.plugin('alioss').use(AliOSSPlugin, [
-        {
-          ossBaseDir: '/digitalcnzz/pretest/',
-          project: 'digitalcnzz-xxxx-h5', // 发布前把xxxx换成当前项目的名称
-          retry: 0,
-          gzip: true,
-          exclude: /.*\.$/,
-          removeMode: false
-        }
-      ])
-    }
+    // if (IS_PROD && process.env.WEBPACK_ALIOSS_PLUGIN_ACCESS_KEY_ID) {
+    //   config.plugin('alioss').use(AliOSSPlugin, [
+    //     {
+    //       ossBaseDir: '/digitalcnzz/pretest/',
+    //       project: 'digitalcnzz-xxxx-h5', // 发布前把xxxx换成当前项目的名称
+    //       retry: 0,
+    //       gzip: true,
+    //       exclude: /.*\.$/,
+    //       removeMode: false
+    //     }
+    //   ])
+    // }
     // 别名 alias
     config.resolve.alias
       .set('@', resolve('src'))
