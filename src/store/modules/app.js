@@ -3,8 +3,8 @@ import { containerType, loginApp, getonverified } from '@/utils/alipay'
 import { alipayJSReady } from '@/utils'
 
 const getUseInfo = callback => {
-  if (containerType() == 'app') {
-    //app用法
+  if (containerType() === 'app') {
+    // app用法
     window.AlipayJSBridge.call('getAppUserInfo', result => {
       const { userInfo } = result
       console.log('accessToken', userInfo.accessToken)
@@ -56,10 +56,12 @@ const actions = {
   // 设置name
   setUserInfo: ({ commit }) => {
     return new Promise(resolve => {
-      alipayJSReady(getUseInfo(res => {
-        commit('SET_USER_INFO', res)
-        resolve(res)
-      }))
+      alipayJSReady(
+        getUseInfo(res => {
+          commit('SET_USER_INFO', res)
+          resolve(res)
+        })
+      )
     })
   }
 }

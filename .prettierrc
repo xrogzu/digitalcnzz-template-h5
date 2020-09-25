@@ -12,6 +12,8 @@
   "jsxBracketSameLine": true,
   "useTabs": false,
   "eslintIntegration": true,
+  "htmlWhitespaceSensitivity": "ignore",
+  "insertSpaceBeforeFunctionParenthesis": false,
   "overrides": [
     {
       "files": ".prettierrc",

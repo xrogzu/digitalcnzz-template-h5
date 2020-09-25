@@ -10,18 +10,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   name: 'AppLayout',
   data() {
     return {}
   },
-  computed: {
-    ...mapActions(['setUserInfo'])
-  },
-  created() {
-    this.$store.dispatch('app/setUserInfo')
-  },
+  computed: {},
+  created() {},
   components: {},
   methods: {}
 }
