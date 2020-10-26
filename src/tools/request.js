@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { baseUrl } from '../httpUrl'
+import { baseApi } from '@/config'
 class HTTP {
   static get (url, data) {
     return this.request(url, data, 'GET')
@@ -12,7 +12,7 @@ class HTTP {
     return new Promise((resolve, reject) => {
       axios({
         method: method,
-        url: baseUrl + url,
+        url: baseApi + url,
         data: data || {}
       })
         .then(res => {
