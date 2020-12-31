@@ -7,7 +7,6 @@ const getUseInfo = callback => {
     // app用法
     window.AlipayJSBridge.call('getAppUserInfo', result => {
       const { userInfo } = result
-      console.log('accessToken', userInfo.accessToken)
       console.log('userInfo', userInfo)
       if (!result) {
         console.log('not result', result)
@@ -56,12 +55,12 @@ const actions = {
   // 设置name
   setUserInfo: ({ commit }) => {
     return new Promise(resolve => {
-      alipayJSReady(
+      alipayJSReady(() => {
         getUseInfo(res => {
           commit('SET_USER_INFO', res)
           resolve(res)
         })
-      )
+      })
     })
   }
 }

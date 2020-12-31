@@ -8,6 +8,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vconsole from 'vconsole'
+
 if (process.env.VUE_APP_ENV === 'development') {
   Vue.use(new Vconsole())
 }
@@ -23,7 +24,12 @@ import '@/assets/css/index.scss'
 import '@/assets/scss/index.scss'
 // 移动端适配
 import 'lib-flexible/flexible.js'
+import Moment from 'moment'
 
+// 配置moment全局时间过滤器
+Vue.filter('formatTime', function (data, format) {
+  return Moment(data).format(format)
+})
 // filters
 import './filters'
 Vue.config.productionTip = false

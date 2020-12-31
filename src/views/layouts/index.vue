@@ -21,3 +21,13 @@ export default {
   methods: {}
 }
 </script>
+<style lang="scss">
+.app-container {
+  height: 100%;
+  width: 100%;
+  .layout-content {
+    height: 100%;
+    width: 100%;
+  }
+}
+</style>

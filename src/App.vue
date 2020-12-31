@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    {{ this.$store.state }}
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
