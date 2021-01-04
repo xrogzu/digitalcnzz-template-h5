@@ -5,33 +5,28 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const AliOSSPlugin = require('webpack-alioss-plugin')
 
 const resolve = dir => path.join(__dirname, dir)
-// page title
 const name = defaultSettings.title || 'vue mobile template'
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 module.exports = {
-  publicPath: './', // 署应用包时的基本 URL。 vue-router hash 模式使用
-  //  publicPath: '/app/', //署应用包时的基本 URL。  vue-router history模式使用
-  outputDir: 'dist', //  生产环境构建文件的目录
-  assetsDir: 'static', //  outputDir的静态资源(js、css、img、fonts)目录
+  publicPath: './',
+  outputDir: 'dist',
+  assetsDir: 'static',
   lintOnSave: !IS_PROD,
-  productionSourceMap: false, // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
+  productionSourceMap: false,
   devServer: {
-    port: 9020, // 端口
-    open: false, // 启动后打开浏览器
+    port: 9020,
+    open: false,
     overlay: {
-      //  当出现编译器错误或警告时，在浏览器中显示全屏覆盖层
       warnings: false,
       errors: true
     }
   },
   css: {
-    extract: IS_PROD, //是否将组件中的 CSS 提取至一个独立的 CSS 文件中 (而不是动态注入到 JavaScript 中的 inline 代码)。
+    extract: IS_PROD,
     sourceMap: false,
     loaderOptions: {
       scss: {
-        // 向全局sass样式传入共享的全局变量, $src可以配置图片cdn前缀
-        // 详情: https://cli.vuejs.org/guide/css.html#passing-options-to-pre-processor-loaders
         prependData: `
           @import "assets/scss/mixin.scss";
           @import "assets/scss/variables.scss";
@@ -67,9 +62,6 @@ module.exports = {
       .set('views', resolve('src/views'))
       .set('components', resolve('src/components'))
 
-    /**
-     * 设置保留空格
-     */
     config.module
       .rule('vue')
       .use('vue-loader')
@@ -90,7 +82,6 @@ module.exports = {
       ])
     }
     config
-      // https://webpack.js.org/configuration/devtool/#development
       .when(!IS_PROD, config => config.devtool('cheap-source-map'))
 
     config.when(IS_PROD, config => {
@@ -107,23 +98,22 @@ module.exports = {
       config.optimization.splitChunks({
         chunks: 'all',
         cacheGroups: {
-          // cacheGroups 下可以可以配置多个组，每个组根据test设置条件，符合test条件的模块
           commons: {
             name: 'chunk-commons',
             test: resolve('src/components'),
-            minChunks: 3, //  被至少用三次以上打包分离
-            priority: 5, // 优先级
-            reuseExistingChunk: true // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的。
+            minChunks: 3,
+            priority: 5,
+            reuseExistingChunk: true
           },
           node_vendors: {
             name: 'chunk-libs',
-            chunks: 'initial', // 只打包初始时依赖的第三方
+            chunks: 'initial',
             test: /[\\/]node_modules[\\/]/,
             priority: 10
           },
           vantUI: {
-            name: 'chunk-vantUI', // 单独将 vantUI 拆包
-            priority: 20, // 数字大权重到，满足多个 cacheGroups 的条件时候分到权重高的
+            name: 'chunk-vantUI',
+            priority: 20,
             test: /[\\/]node_modules[\\/]_?vant(.*)/
           }
         }
