@@ -40,8 +40,8 @@ module.exports = {
   },
 
   chainWebpack: config => {
-    config.plugins.delete('preload') // TODO: need test
-    config.plugins.delete('prefetch') // TODO: need test
+    config.plugins.delete('preload')
+    config.plugins.delete('prefetch')
     // if (IS_PROD && process.env.WEBPACK_ALIOSS_PLUGIN_ACCESS_KEY_ID) {
     //   config.plugin('alioss').use(AliOSSPlugin, [
     //     {
@@ -81,8 +81,7 @@ module.exports = {
         }
       ])
     }
-    config
-      .when(!IS_PROD, config => config.devtool('cheap-source-map'))
+    config.when(!IS_PROD, config => config.devtool('cheap-source-map'))
 
     config.when(IS_PROD, config => {
       config
