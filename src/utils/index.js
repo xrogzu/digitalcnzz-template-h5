@@ -1,9 +1,33 @@
+import { lazyAMapApiLoaderInstance } from 'vue-amap'
+
 /**
- * Parse the time to string
- * @param {(Object|string|number)} time
- * @param {string} cFormat
- * @returns {string}
+ * 根据经纬度验证当前位置的地址
+ * @param {*} addressName 当前限制地址:(比如:郑州市)
+ * @param {*} callback 验证结果回调函数 参数 true:验证通过 false:验证不通过
  */
+export const getAddressWithCode = (addressName, callback) => {
+  lazyAMapApiLoaderInstance.load().then(() => {
+    window.AMap.plugin('AMap.Geocoder', () => {
+      const geocoder = new window.AMap.Geocoder()
+      alipayJSReady(() => {
+        window.AlipayJSBridge.call('location', res => {
+          geocoder.getAddress([res.longitude, res.latitude], (status, result) => {
+            if (status === 'complete' && result.info === 'OK') {
+              if (result.regeocode.formattedAddress.indexOf(addressName) >= 0) {
+                callback && callback(true)
+              } else {
+                callback && callback(false)
+              }
+            } else {
+              callback && callback(false)
+            }
+          })
+        })
+      })
+    })
+  })
+}
+
 export function parseTime (time, cFormat) {
   if (arguments.length === 0) {
     return null
@@ -88,11 +112,7 @@ export function param2Obj (url) {
   }
   return JSON.parse(
     '{"' +
-    decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"')
-      .replace(/\+/g, ' ') +
+    decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ') +
     '"}'
   )
 }

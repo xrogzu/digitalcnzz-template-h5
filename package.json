@@ -14,17 +14,17 @@
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "dayjs": "^1.9.8",
+    "echarts": "^5.0.0",
     "lib-flexible": "^0.3.2",
     "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "regenerator-runtime": "^0.13.7",
+    "stylus": "^0.54.8",
+    "swiper": "^6.4.5",
     "vant": "^2.12.1",
     "vue": "^2.6.12",
     "vue-router": "^3.4.9",
-    "vuex": "^3.6.0",
-    "moment": "^2.29.1",
-    "stylus": "^0.54.8",
-    "echarts": "^5.0.0",
-    "swiper": "^6.4.5"
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.9",
@@ -43,6 +43,7 @@
     "sass-loader": "^8.0.2",
     "script-ext-html-webpack-plugin": "^2.1.5",
     "vconsole": "^3.3.4",
+    "vue-amap": "^0.5.10",
     "vue-template-compiler": "^2.6.12",
     "webpack-alioss-plugin": "^2.4.0",
     "webpack-bundle-analyzer": "^4.3.0"

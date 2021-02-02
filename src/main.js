@@ -15,6 +15,15 @@ if (process.env.VUE_APP_ENV === 'development') {
 import { $cdn } from '@/config'
 Vue.prototype.$cdn = $cdn
 
+import VueAMap from 'vue-amap'
+Vue.use(VueAMap)
+
+VueAMap.initAMapApiLoader({
+  key: 'bee29266f58bf456be8bb5bf92347ee7',
+  plugin: ['AMap.Geocoder'],
+  v: '1.4.15'
+})
+
 import '@/plugins/vant'
 import '@/assets/css/index.scss'
 import '@/assets/scss/index.scss'
