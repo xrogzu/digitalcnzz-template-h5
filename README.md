@@ -2,6 +2,10 @@
 
 数字郑州前端项目移动端模板
 
+# 镜像源设置
+
+npm config set registry http://192.168.200.6:4873
+
 # 安装依赖环境
 
 yarn 、npm install
