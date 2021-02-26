@@ -1,4 +1,5 @@
 import { lazyAMapApiLoaderInstance } from 'vue-amap'
+import { zhbJssdk } from '@digitalcnzz/jssdk'
 
 /**
  * 根据经纬度验证当前位置的地址
@@ -9,19 +10,17 @@ export const getAddressWithCode = (addressName, callback) => {
   lazyAMapApiLoaderInstance.load().then(() => {
     window.AMap.plugin('AMap.Geocoder', () => {
       const geocoder = new window.AMap.Geocoder()
-      alipayJSReady(() => {
-        window.AlipayJSBridge.call('location', res => {
-          geocoder.getAddress([res.longitude, res.latitude], (status, result) => {
-            if (status === 'complete' && result.info === 'OK') {
-              if (result.regeocode.formattedAddress.indexOf(addressName) >= 0) {
-                callback && callback(true)
-              } else {
-                callback && callback(false)
-              }
+      zhbJssdk.getLocationInfo(res => {
+        geocoder.getAddress([res.longitude, res.latitude], (status, result) => {
+          if (status === 'complete' && result.info === 'OK') {
+            if (result.regeocode.formattedAddress.indexOf(addressName) >= 0) {
+              callback && callback(true)
             } else {
               callback && callback(false)
             }
-          })
+          } else {
+            callback && callback(false)
+          }
         })
       })
     })
@@ -115,12 +114,4 @@ export function param2Obj (url) {
     decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ') +
     '"}'
   )
-}
-
-export function alipayJSReady (callback) {
-  if (window.AlipayJSBridge) {
-    callback && callback()
-  } else {
-    document.addEventListener('AlipayJSBridgeReady', callback, false)
-  }
 }

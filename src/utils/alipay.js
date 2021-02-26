@@ -1,9 +1,10 @@
+import { zhbJssdk } from '@digitalcnzz/jssdk'
 export const loginApp = () => {
-  window.AlipayJSBridge.call('login', () => { })
+  zhbJssdk.lunchZhbLogin(() => { })
 }
 
 export const getonverified = () => {
-  window.AlipayJSBridge.call('getonverified', {}, function () { })
+  zhbJssdk.getZhbCertification(() => { })
 }
 
 // 判断浏览器内核、手机系统等，使用

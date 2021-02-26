@@ -1,11 +1,11 @@
 import { Toast } from 'vant'
 import { containerType, loginApp, getonverified } from '@/utils/alipay'
-import { alipayJSReady } from '@/utils'
+import { getZhbUserInfo } from '@digitalcnzz/zhbsdk'
 
 const getUseInfo = callback => {
   if (containerType() === 'app') {
     // app用法
-    window.AlipayJSBridge.call('getAppUserInfo', result => {
+    getZhbUserInfo(result => {
       const { userInfo } = result
       console.log('userInfo', userInfo)
       if (!result) {
@@ -54,14 +54,21 @@ const mutations = {
 const actions = {
   // 设置name
   setUserInfo: ({ commit }) => {
-    return new Promise(resolve => {
-      alipayJSReady(() => {
+    if (containerType() === 'app') {
+      return new Promise(resolve => {
         getUseInfo(res => {
           commit('SET_USER_INFO', res)
           resolve(res)
         })
       })
-    })
+    } else {
+      Toast({
+        message: '请在郑好办手机客户端进行访问。',
+        duration: 0,
+        overlay: true,
+        forbidClick: true
+      })
+    }
   }
 }
 

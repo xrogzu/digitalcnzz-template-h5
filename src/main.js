@@ -18,6 +18,9 @@ Vue.prototype.$cdn = $cdn
 import VueAMap from 'vue-amap'
 Vue.use(VueAMap)
 
+import DigitalUI from '@digitalcnzz/mobile-ui'
+Vue.use(DigitalUI)
+
 VueAMap.initAMapApiLoader({
   key: 'bee29266f58bf456be8bb5bf92347ee7',
   plugin: ['AMap.Geocoder'],
