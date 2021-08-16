@@ -8,7 +8,7 @@ import router from './router'
 import store from './store'
 import Vconsole from 'vconsole'
 
-if (process.env.VUE_APP_ENV === 'development') {
+if (process.env.VUE_APP_ENV !== 'production') {
   Vue.use(new Vconsole())
 }
 
@@ -40,10 +40,16 @@ Vue.filter('formatTime', function (data, format) {
 // filters
 import './filters'
 Vue.config.productionTip = false
+// import { configWXSDK, startMutiPlatformVerify } from '@/utils/auth'
+const initVueApp = () => {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
+  })
+  // configWXSDK() // 获取微信sdk签名信息
+}
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})
+initVueApp() // 本地调试以及不需要支持其他平台(微信、支付宝)登录的话启用，如果需要多端支持，打包发布之前需要注释掉
+// startMutiPlatformVerify(initVueApp) // 如果需要多端支持，打包发布线上需要开启

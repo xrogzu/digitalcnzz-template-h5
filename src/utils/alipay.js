@@ -1,4 +1,7 @@
 import { zhbJssdk } from '@digitalcnzz/jssdk'
+import request from '@/utils/request'
+import { Dialog } from 'vant'
+
 export const loginApp = () => {
   zhbJssdk.lunchZhbLogin(() => { })
 }
@@ -9,14 +12,115 @@ export const getonverified = () => {
 
 // 判断浏览器内核、手机系统等，使用
 export const containerType = () => {
-  var sUserAgent = navigator.userAgent.toLowerCase()
-  var bIsApp = sUserAgent.indexOf('izzzwfwapp') > -1
-  var bIsAlipay = sUserAgent.indexOf('alipayclient') > -1
+  const sUserAgent = navigator.userAgent.toLowerCase()
+  console.log('sUserAgent', sUserAgent)
+  const bIsApp = sUserAgent.indexOf('izzzwfwapp') > -1
+  const bIsAlipay = sUserAgent.indexOf('alipayclient') > -1
+  const bIsWeChat = sUserAgent.indexOf('micromessenger') > -1
+  const bIsMiniApp = sUserAgent.indexOf('miniprogram') > -1
   if (bIsApp) {
     return 'app'
+  } else if (bIsAlipay && bIsMiniApp) {
+    return 'xcxmini'
   } else if (bIsAlipay) {
     return 'xcx'
+  } else if (bIsWeChat) {
+    return 'wechat'
   } else {
     return 'other'
   }
+}
+
+export const isZfb = () => {
+  return containerType() == 'xcx'
+}
+
+export const isZfbMini = () => {
+  return containerType() == 'xcx' && containerType() == 'xcxmini'
+}
+
+export const isWx = () => {
+  return containerType() == 'wechat'
+}
+
+export const isZhb = () => {
+  return containerType() == 'app'
+}
+
+export const isOther = () => {
+  return containerType() == 'other'
+}
+
+// 微信授权之后根据微信/支付宝的authCode换取用户的openId
+export const getToken = async (params, type, callback) => {
+  const url =
+    type === 'zfb'
+      ? 'https://app-izz.zhengzhou.gov.cn:10019/third/open/ali/userid/get'
+      : 'https://app-izz.zhengzhou.gov.cn:10019/third/open/wx/openid/check/get'
+  try {
+    const res = await request(url, {
+      method: 'POST',
+      data: {
+        code: params?.code
+      }
+    })
+    const { code, data } = res || {}
+    if (code === 0) {
+      if (type === 'zfb') {
+        localStorage.setItem('zfbOpenId', data.userId)
+      } else {
+        localStorage.setItem('wxOpenId', data.token)
+      }
+      callback && callback() // 获取之后操作
+    } else if (code === 400) {
+      Dialog.Dialog({
+        title: '提示',
+        message: '获取微信信息失败,请重新尝试'
+      }).then(() => {
+        window.location.reload()
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    // Toast('获取token失败')
+  }
+}
+
+export const alipayJSReady = callback => {
+  if (window.AlipayJSBridge) {
+    callback && callback()
+  } else {
+    document.addEventListener('AlipayJSBridgeReady', callback, false)
+  }
+}
+
+export const getUserInfo = () => {
+  // 返回一个Promise实例对象
+  return new Promise((resolve, reject) => {
+    alipayJSReady(() => {
+      window.AlipayJSBridge.call('getAppUserInfo', res => resolve(res))
+    })
+  })
+}
+
+// 退出
+export const exitApp = () => {
+  window.AlipayJSBridge.call('exitApp')
+}
+
+// 埋点
+export const buriedAppliet = (data, callback) => {
+  alipayJSReady(() => {
+    window.AlipayJSBridge.call(
+      'buriedAppliet',
+      {
+        bizType: data.bizType, //  业务id (可不传)
+        eventId: data.eventId, // 埋点id （必传）
+        extParam: { ...data.extParam }
+      },
+      result => {
+        callback(result)
+      }
+    )
+  })
 }

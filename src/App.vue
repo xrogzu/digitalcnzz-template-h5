@@ -11,7 +11,9 @@ export default {
   name: 'App',
   computed: {},
   created() {
-    this.$store.dispatch('app/setUserInfo')
+    if (this.$isZhb) {
+      this.$store.dispatch('app/setUserInfo')
+    }
   },
   methods: {}
 }

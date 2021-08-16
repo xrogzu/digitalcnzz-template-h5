@@ -1,5 +1,7 @@
 import { lazyAMapApiLoaderInstance } from 'vue-amap'
 import { zhbJssdk } from '@digitalcnzz/jssdk'
+import moment from 'moment'
+const crypto = require('crypto')
 
 /**
  * 根据经纬度验证当前位置的地址
@@ -114,4 +116,86 @@ export function param2Obj (url) {
     decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ') +
     '"}'
   )
+}
+
+export const formatNumber = num => {
+  if (num) {
+    const str = num.toString()
+    const reg = str.indexOf('.') > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
+    return str.replace(reg, '$1,')
+  } else {
+    return `${num}`
+  }
+}
+
+export const getCurrentDate = () => {
+  return moment().format('yyyyMMDD')
+}
+export const getTimeStamp = () => new Date().getTime()
+
+// 构建签名字符串
+export const buildStringToSign = options => {
+  const arr = {}
+  const toStringify = Object.assign(arr, options)
+  let result = ''
+  if (Object.keys(toStringify).length) {
+    const keys = Object.keys(toStringify).sort()
+    const list = new Array(keys.length)
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i]
+      if (toStringify[key] && String(toStringify[key])) {
+        list[i] = `${key}=${toStringify[key]}`
+      } else {
+        list[i] = `${key}`
+      }
+    }
+    result += list.join('&')
+  }
+  return result
+}
+
+// 根据参数和秘钥生成签名
+export const sign = (stringToSign, secretKey) => {
+  const appSecret = Buffer.from(secretKey, 'utf8')
+  const signRes = crypto.createHmac('sha1', appSecret).update(stringToSign, 'utf8').digest('base64')
+  return signRes
+}
+
+// 获取签名信息
+export const getSignature = option => {
+  const str = buildStringToSign(option)
+  const csbSignature = sign(str, 'oDGJlnZhSu1UzLMy3gEYT/5hsfY=')
+  return csbSignature
+}
+/**
+ * 一维数组渲染成二维
+ * @param {*}} size 二维中每一个数组的长度
+ * @param {*} arr 带转换的一维数组
+ * @returns 渲染后的二维数组
+ */
+export const level2ArrayRender = (size, arr) => {
+  const level2Array = []
+  let index = 0
+  let tempArray = []
+  for (const item of arr) {
+    tempArray.push(item)
+    index++
+    if (index >= size) {
+      index = 0
+      level2Array.push(tempArray)
+      tempArray = []
+    }
+  }
+  const numberArr = new Array(size).fill(0)
+  for (let index in numberArr) {
+    if (arr.length % size === ++index) {
+      level2Array.push(arr.slice(-index))
+    }
+  }
+  return level2Array
+}
+
+export const handleNumberPercent = data => {
+  const percent = Number(parseFloat(data) * 100).toFixed(2)
+  return percent
 }
