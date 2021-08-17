@@ -78,7 +78,7 @@ export const wxInit = jsapiTickt => {
     timestamp: timestamp, // 必填，生成签名的时间戳
     nonceStr: nonceStr, // 必填，生成签名的随机串
     signature: sha11(jsapiTickt), // 必填，签名，见附录1
-    jsApiList: ['scanQRCode']
+    jsApiList: ['scanQRCode', 'chooseImage', 'getLocalImgData']
   })
 }
 
