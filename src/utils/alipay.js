@@ -11,6 +11,7 @@ export const getonverified = () => {
 }
 
 // 判断浏览器内核、手机系统等，使用
+// 判断浏览器内核、手机系统等，使用
 export const containerType = () => {
   const sUserAgent = navigator.userAgent.toLowerCase()
   console.log('sUserAgent', sUserAgent)
@@ -18,6 +19,7 @@ export const containerType = () => {
   const bIsAlipay = sUserAgent.indexOf('alipayclient') > -1
   const bIsWeChat = sUserAgent.indexOf('micromessenger') > -1
   const bIsMiniApp = sUserAgent.indexOf('miniprogram') > -1
+  const bIsDingTalk = sUserAgent.indexOf('dingtalk') > -1
   if (bIsApp) {
     return 'app'
   } else if (bIsAlipay && bIsMiniApp) {
@@ -26,9 +28,15 @@ export const containerType = () => {
     return 'xcx'
   } else if (bIsWeChat) {
     return 'wechat'
+  } else if (bIsDingTalk) {
+    return 'dingtalk'
   } else {
     return 'other'
   }
+}
+
+export const isDingTalk = () => {
+  return containerType() == 'dingtalk'
 }
 
 export const isZfb = () => {

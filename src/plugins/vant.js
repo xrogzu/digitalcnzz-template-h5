@@ -1,6 +1,6 @@
 // 按需全局引入 vant组件
 import Vue from 'vue'
-import { isZhb, isZfb, isWx, isOther, isZfbMini } from '@/utils/alipay'
+import { isZhb, isZfb, isWx, isOther, isZfbMini, isDingTalk } from '@/utils/alipay'
 import {
   Toast,
   Search,
@@ -70,3 +70,4 @@ Vue.prototype.$isZhb = isZhb()
 Vue.prototype.$isZfb = isZfb()
 Vue.prototype.$isOther = isOther()
 Vue.prototype.$isZfbMini = isZfbMini()
+Vue.prototype.$isDingTalk = isDingTalk()
